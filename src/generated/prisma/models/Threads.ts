@@ -29,11 +29,13 @@ export type AggregateThreads = {
 export type ThreadsAvgAggregateOutputType = {
   id: number | null
   userId: number | null
+  parentId: number | null
 }
 
 export type ThreadsSumAggregateOutputType = {
   id: number | null
   userId: number | null
+  parentId: number | null
 }
 
 export type ThreadsMinAggregateOutputType = {
@@ -41,6 +43,7 @@ export type ThreadsMinAggregateOutputType = {
   userId: number | null
   title: string | null
   content: string | null
+  parentId: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +53,7 @@ export type ThreadsMaxAggregateOutputType = {
   userId: number | null
   title: string | null
   content: string | null
+  parentId: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -59,6 +63,7 @@ export type ThreadsCountAggregateOutputType = {
   userId: number
   title: number
   content: number
+  parentId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -68,11 +73,13 @@ export type ThreadsCountAggregateOutputType = {
 export type ThreadsAvgAggregateInputType = {
   id?: true
   userId?: true
+  parentId?: true
 }
 
 export type ThreadsSumAggregateInputType = {
   id?: true
   userId?: true
+  parentId?: true
 }
 
 export type ThreadsMinAggregateInputType = {
@@ -80,6 +87,7 @@ export type ThreadsMinAggregateInputType = {
   userId?: true
   title?: true
   content?: true
+  parentId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -89,6 +97,7 @@ export type ThreadsMaxAggregateInputType = {
   userId?: true
   title?: true
   content?: true
+  parentId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -98,6 +107,7 @@ export type ThreadsCountAggregateInputType = {
   userId?: true
   title?: true
   content?: true
+  parentId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -194,6 +204,7 @@ export type ThreadsGroupByOutputType = {
   userId: number
   title: string
   content: string
+  parentId: number | null
   createdAt: Date
   updatedAt: Date
   _count: ThreadsCountAggregateOutputType | null
@@ -226,9 +237,12 @@ export type ThreadsWhereInput = {
   userId?: Prisma.IntFilter<"Threads"> | number
   title?: Prisma.StringFilter<"Threads"> | string
   content?: Prisma.StringFilter<"Threads"> | string
+  parentId?: Prisma.IntNullableFilter<"Threads"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Threads"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Threads"> | Date | string
+  parent?: Prisma.XOR<Prisma.ThreadsNullableScalarRelationFilter, Prisma.ThreadsWhereInput> | null
   user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.UsersWhereInput>
+  replies?: Prisma.ThreadsListRelationFilter
 }
 
 export type ThreadsOrderByWithRelationInput = {
@@ -236,9 +250,12 @@ export type ThreadsOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  parent?: Prisma.ThreadsOrderByWithRelationInput
   user?: Prisma.UsersOrderByWithRelationInput
+  replies?: Prisma.ThreadsOrderByRelationAggregateInput
 }
 
 export type ThreadsWhereUniqueInput = Prisma.AtLeast<{
@@ -249,9 +266,12 @@ export type ThreadsWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.IntFilter<"Threads"> | number
   title?: Prisma.StringFilter<"Threads"> | string
   content?: Prisma.StringFilter<"Threads"> | string
+  parentId?: Prisma.IntNullableFilter<"Threads"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Threads"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Threads"> | Date | string
+  parent?: Prisma.XOR<Prisma.ThreadsNullableScalarRelationFilter, Prisma.ThreadsWhereInput> | null
   user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.UsersWhereInput>
+  replies?: Prisma.ThreadsListRelationFilter
 }, "id">
 
 export type ThreadsOrderByWithAggregationInput = {
@@ -259,6 +279,7 @@ export type ThreadsOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ThreadsCountOrderByAggregateInput
@@ -276,6 +297,7 @@ export type ThreadsScalarWhereWithAggregatesInput = {
   userId?: Prisma.IntWithAggregatesFilter<"Threads"> | number
   title?: Prisma.StringWithAggregatesFilter<"Threads"> | string
   content?: Prisma.StringWithAggregatesFilter<"Threads"> | string
+  parentId?: Prisma.IntNullableWithAggregatesFilter<"Threads"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Threads"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Threads"> | Date | string
 }
@@ -285,7 +307,9 @@ export type ThreadsCreateInput = {
   content: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  parent?: Prisma.ThreadsCreateNestedOneWithoutRepliesInput
   user: Prisma.UsersCreateNestedOneWithoutThreadsInput
+  replies?: Prisma.ThreadsCreateNestedManyWithoutParentInput
 }
 
 export type ThreadsUncheckedCreateInput = {
@@ -293,8 +317,10 @@ export type ThreadsUncheckedCreateInput = {
   userId: number
   title: string
   content: string
+  parentId?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  replies?: Prisma.ThreadsUncheckedCreateNestedManyWithoutParentInput
 }
 
 export type ThreadsUpdateInput = {
@@ -302,7 +328,9 @@ export type ThreadsUpdateInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parent?: Prisma.ThreadsUpdateOneWithoutRepliesNestedInput
   user?: Prisma.UsersUpdateOneRequiredWithoutThreadsNestedInput
+  replies?: Prisma.ThreadsUpdateManyWithoutParentNestedInput
 }
 
 export type ThreadsUncheckedUpdateInput = {
@@ -310,8 +338,10 @@ export type ThreadsUncheckedUpdateInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  replies?: Prisma.ThreadsUncheckedUpdateManyWithoutParentNestedInput
 }
 
 export type ThreadsCreateManyInput = {
@@ -319,6 +349,7 @@ export type ThreadsCreateManyInput = {
   userId: number
   title: string
   content: string
+  parentId?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -335,6 +366,7 @@ export type ThreadsUncheckedUpdateManyInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -349,11 +381,17 @@ export type ThreadsOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type ThreadsNullableScalarRelationFilter = {
+  is?: Prisma.ThreadsWhereInput | null
+  isNot?: Prisma.ThreadsWhereInput | null
+}
+
 export type ThreadsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -361,6 +399,7 @@ export type ThreadsCountOrderByAggregateInput = {
 export type ThreadsAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
 }
 
 export type ThreadsMaxOrderByAggregateInput = {
@@ -368,6 +407,7 @@ export type ThreadsMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -377,6 +417,7 @@ export type ThreadsMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -384,6 +425,7 @@ export type ThreadsMinOrderByAggregateInput = {
 export type ThreadsSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
 }
 
 export type ThreadsCreateNestedManyWithoutUserInput = {
@@ -428,19 +470,89 @@ export type ThreadsUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.ThreadsScalarWhereInput | Prisma.ThreadsScalarWhereInput[]
 }
 
+export type ThreadsCreateNestedOneWithoutRepliesInput = {
+  create?: Prisma.XOR<Prisma.ThreadsCreateWithoutRepliesInput, Prisma.ThreadsUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.ThreadsCreateOrConnectWithoutRepliesInput
+  connect?: Prisma.ThreadsWhereUniqueInput
+}
+
+export type ThreadsCreateNestedManyWithoutParentInput = {
+  create?: Prisma.XOR<Prisma.ThreadsCreateWithoutParentInput, Prisma.ThreadsUncheckedCreateWithoutParentInput> | Prisma.ThreadsCreateWithoutParentInput[] | Prisma.ThreadsUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.ThreadsCreateOrConnectWithoutParentInput | Prisma.ThreadsCreateOrConnectWithoutParentInput[]
+  createMany?: Prisma.ThreadsCreateManyParentInputEnvelope
+  connect?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+}
+
+export type ThreadsUncheckedCreateNestedManyWithoutParentInput = {
+  create?: Prisma.XOR<Prisma.ThreadsCreateWithoutParentInput, Prisma.ThreadsUncheckedCreateWithoutParentInput> | Prisma.ThreadsCreateWithoutParentInput[] | Prisma.ThreadsUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.ThreadsCreateOrConnectWithoutParentInput | Prisma.ThreadsCreateOrConnectWithoutParentInput[]
+  createMany?: Prisma.ThreadsCreateManyParentInputEnvelope
+  connect?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+}
+
+export type ThreadsUpdateOneWithoutRepliesNestedInput = {
+  create?: Prisma.XOR<Prisma.ThreadsCreateWithoutRepliesInput, Prisma.ThreadsUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.ThreadsCreateOrConnectWithoutRepliesInput
+  upsert?: Prisma.ThreadsUpsertWithoutRepliesInput
+  disconnect?: Prisma.ThreadsWhereInput | boolean
+  delete?: Prisma.ThreadsWhereInput | boolean
+  connect?: Prisma.ThreadsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ThreadsUpdateToOneWithWhereWithoutRepliesInput, Prisma.ThreadsUpdateWithoutRepliesInput>, Prisma.ThreadsUncheckedUpdateWithoutRepliesInput>
+}
+
+export type ThreadsUpdateManyWithoutParentNestedInput = {
+  create?: Prisma.XOR<Prisma.ThreadsCreateWithoutParentInput, Prisma.ThreadsUncheckedCreateWithoutParentInput> | Prisma.ThreadsCreateWithoutParentInput[] | Prisma.ThreadsUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.ThreadsCreateOrConnectWithoutParentInput | Prisma.ThreadsCreateOrConnectWithoutParentInput[]
+  upsert?: Prisma.ThreadsUpsertWithWhereUniqueWithoutParentInput | Prisma.ThreadsUpsertWithWhereUniqueWithoutParentInput[]
+  createMany?: Prisma.ThreadsCreateManyParentInputEnvelope
+  set?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+  disconnect?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+  delete?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+  connect?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+  update?: Prisma.ThreadsUpdateWithWhereUniqueWithoutParentInput | Prisma.ThreadsUpdateWithWhereUniqueWithoutParentInput[]
+  updateMany?: Prisma.ThreadsUpdateManyWithWhereWithoutParentInput | Prisma.ThreadsUpdateManyWithWhereWithoutParentInput[]
+  deleteMany?: Prisma.ThreadsScalarWhereInput | Prisma.ThreadsScalarWhereInput[]
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type ThreadsUncheckedUpdateManyWithoutParentNestedInput = {
+  create?: Prisma.XOR<Prisma.ThreadsCreateWithoutParentInput, Prisma.ThreadsUncheckedCreateWithoutParentInput> | Prisma.ThreadsCreateWithoutParentInput[] | Prisma.ThreadsUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.ThreadsCreateOrConnectWithoutParentInput | Prisma.ThreadsCreateOrConnectWithoutParentInput[]
+  upsert?: Prisma.ThreadsUpsertWithWhereUniqueWithoutParentInput | Prisma.ThreadsUpsertWithWhereUniqueWithoutParentInput[]
+  createMany?: Prisma.ThreadsCreateManyParentInputEnvelope
+  set?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+  disconnect?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+  delete?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+  connect?: Prisma.ThreadsWhereUniqueInput | Prisma.ThreadsWhereUniqueInput[]
+  update?: Prisma.ThreadsUpdateWithWhereUniqueWithoutParentInput | Prisma.ThreadsUpdateWithWhereUniqueWithoutParentInput[]
+  updateMany?: Prisma.ThreadsUpdateManyWithWhereWithoutParentInput | Prisma.ThreadsUpdateManyWithWhereWithoutParentInput[]
+  deleteMany?: Prisma.ThreadsScalarWhereInput | Prisma.ThreadsScalarWhereInput[]
+}
+
 export type ThreadsCreateWithoutUserInput = {
   title: string
   content: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  parent?: Prisma.ThreadsCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.ThreadsCreateNestedManyWithoutParentInput
 }
 
 export type ThreadsUncheckedCreateWithoutUserInput = {
   id?: number
   title: string
   content: string
+  parentId?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  replies?: Prisma.ThreadsUncheckedCreateNestedManyWithoutParentInput
 }
 
 export type ThreadsCreateOrConnectWithoutUserInput = {
@@ -476,14 +588,114 @@ export type ThreadsScalarWhereInput = {
   userId?: Prisma.IntFilter<"Threads"> | number
   title?: Prisma.StringFilter<"Threads"> | string
   content?: Prisma.StringFilter<"Threads"> | string
+  parentId?: Prisma.IntNullableFilter<"Threads"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Threads"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Threads"> | Date | string
+}
+
+export type ThreadsCreateWithoutRepliesInput = {
+  title: string
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  parent?: Prisma.ThreadsCreateNestedOneWithoutRepliesInput
+  user: Prisma.UsersCreateNestedOneWithoutThreadsInput
+}
+
+export type ThreadsUncheckedCreateWithoutRepliesInput = {
+  id?: number
+  userId: number
+  title: string
+  content: string
+  parentId?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ThreadsCreateOrConnectWithoutRepliesInput = {
+  where: Prisma.ThreadsWhereUniqueInput
+  create: Prisma.XOR<Prisma.ThreadsCreateWithoutRepliesInput, Prisma.ThreadsUncheckedCreateWithoutRepliesInput>
+}
+
+export type ThreadsCreateWithoutParentInput = {
+  title: string
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UsersCreateNestedOneWithoutThreadsInput
+  replies?: Prisma.ThreadsCreateNestedManyWithoutParentInput
+}
+
+export type ThreadsUncheckedCreateWithoutParentInput = {
+  id?: number
+  userId: number
+  title: string
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  replies?: Prisma.ThreadsUncheckedCreateNestedManyWithoutParentInput
+}
+
+export type ThreadsCreateOrConnectWithoutParentInput = {
+  where: Prisma.ThreadsWhereUniqueInput
+  create: Prisma.XOR<Prisma.ThreadsCreateWithoutParentInput, Prisma.ThreadsUncheckedCreateWithoutParentInput>
+}
+
+export type ThreadsCreateManyParentInputEnvelope = {
+  data: Prisma.ThreadsCreateManyParentInput | Prisma.ThreadsCreateManyParentInput[]
+}
+
+export type ThreadsUpsertWithoutRepliesInput = {
+  update: Prisma.XOR<Prisma.ThreadsUpdateWithoutRepliesInput, Prisma.ThreadsUncheckedUpdateWithoutRepliesInput>
+  create: Prisma.XOR<Prisma.ThreadsCreateWithoutRepliesInput, Prisma.ThreadsUncheckedCreateWithoutRepliesInput>
+  where?: Prisma.ThreadsWhereInput
+}
+
+export type ThreadsUpdateToOneWithWhereWithoutRepliesInput = {
+  where?: Prisma.ThreadsWhereInput
+  data: Prisma.XOR<Prisma.ThreadsUpdateWithoutRepliesInput, Prisma.ThreadsUncheckedUpdateWithoutRepliesInput>
+}
+
+export type ThreadsUpdateWithoutRepliesInput = {
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parent?: Prisma.ThreadsUpdateOneWithoutRepliesNestedInput
+  user?: Prisma.UsersUpdateOneRequiredWithoutThreadsNestedInput
+}
+
+export type ThreadsUncheckedUpdateWithoutRepliesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ThreadsUpsertWithWhereUniqueWithoutParentInput = {
+  where: Prisma.ThreadsWhereUniqueInput
+  update: Prisma.XOR<Prisma.ThreadsUpdateWithoutParentInput, Prisma.ThreadsUncheckedUpdateWithoutParentInput>
+  create: Prisma.XOR<Prisma.ThreadsCreateWithoutParentInput, Prisma.ThreadsUncheckedCreateWithoutParentInput>
+}
+
+export type ThreadsUpdateWithWhereUniqueWithoutParentInput = {
+  where: Prisma.ThreadsWhereUniqueInput
+  data: Prisma.XOR<Prisma.ThreadsUpdateWithoutParentInput, Prisma.ThreadsUncheckedUpdateWithoutParentInput>
+}
+
+export type ThreadsUpdateManyWithWhereWithoutParentInput = {
+  where: Prisma.ThreadsScalarWhereInput
+  data: Prisma.XOR<Prisma.ThreadsUpdateManyMutationInput, Prisma.ThreadsUncheckedUpdateManyWithoutParentInput>
 }
 
 export type ThreadsCreateManyUserInput = {
   id?: number
   title: string
   content: string
+  parentId?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -493,24 +705,95 @@ export type ThreadsUpdateWithoutUserInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parent?: Prisma.ThreadsUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.ThreadsUpdateManyWithoutParentNestedInput
 }
 
 export type ThreadsUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  replies?: Prisma.ThreadsUncheckedUpdateManyWithoutParentNestedInput
 }
 
 export type ThreadsUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type ThreadsCreateManyParentInput = {
+  id?: number
+  userId: number
+  title: string
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ThreadsUpdateWithoutParentInput = {
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UsersUpdateOneRequiredWithoutThreadsNestedInput
+  replies?: Prisma.ThreadsUpdateManyWithoutParentNestedInput
+}
+
+export type ThreadsUncheckedUpdateWithoutParentInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  replies?: Prisma.ThreadsUncheckedUpdateManyWithoutParentNestedInput
+}
+
+export type ThreadsUncheckedUpdateManyWithoutParentInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type ThreadsCountOutputType
+ */
+
+export type ThreadsCountOutputType = {
+  replies: number
+}
+
+export type ThreadsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  replies?: boolean | ThreadsCountOutputTypeCountRepliesArgs
+}
+
+/**
+ * ThreadsCountOutputType without action
+ */
+export type ThreadsCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ThreadsCountOutputType
+   */
+  select?: Prisma.ThreadsCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ThreadsCountOutputType without action
+ */
+export type ThreadsCountOutputTypeCountRepliesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ThreadsWhereInput
+}
 
 
 export type ThreadsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -518,9 +801,13 @@ export type ThreadsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   userId?: boolean
   title?: boolean
   content?: boolean
+  parentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  parent?: boolean | Prisma.Threads$parentArgs<ExtArgs>
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
+  replies?: boolean | Prisma.Threads$repliesArgs<ExtArgs>
+  _count?: boolean | Prisma.ThreadsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["threads"]>
 
 export type ThreadsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -528,8 +815,10 @@ export type ThreadsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   userId?: boolean
   title?: boolean
   content?: boolean
+  parentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  parent?: boolean | Prisma.Threads$parentArgs<ExtArgs>
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["threads"]>
 
@@ -538,8 +827,10 @@ export type ThreadsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   userId?: boolean
   title?: boolean
   content?: boolean
+  parentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  parent?: boolean | Prisma.Threads$parentArgs<ExtArgs>
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["threads"]>
 
@@ -548,31 +839,40 @@ export type ThreadsSelectScalar = {
   userId?: boolean
   title?: boolean
   content?: boolean
+  parentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ThreadsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "content" | "createdAt" | "updatedAt", ExtArgs["result"]["threads"]>
+export type ThreadsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "content" | "parentId" | "createdAt" | "updatedAt", ExtArgs["result"]["threads"]>
 export type ThreadsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  parent?: boolean | Prisma.Threads$parentArgs<ExtArgs>
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
+  replies?: boolean | Prisma.Threads$repliesArgs<ExtArgs>
+  _count?: boolean | Prisma.ThreadsCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ThreadsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  parent?: boolean | Prisma.Threads$parentArgs<ExtArgs>
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
 }
 export type ThreadsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  parent?: boolean | Prisma.Threads$parentArgs<ExtArgs>
   user?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
 }
 
 export type $ThreadsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Threads"
   objects: {
+    parent: Prisma.$ThreadsPayload<ExtArgs> | null
     user: Prisma.$UsersPayload<ExtArgs>
+    replies: Prisma.$ThreadsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     userId: number
     title: string
     content: string
+    parentId: number | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["threads"]>
@@ -969,7 +1269,9 @@ readonly fields: ThreadsFieldRefs;
  */
 export interface Prisma__ThreadsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  parent<T extends Prisma.Threads$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Threads$parentArgs<ExtArgs>>): Prisma.Prisma__ThreadsClient<runtime.Types.Result.GetResult<Prisma.$ThreadsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UsersDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UsersDefaultArgs<ExtArgs>>): Prisma.Prisma__UsersClient<runtime.Types.Result.GetResult<Prisma.$UsersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  replies<T extends Prisma.Threads$repliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Threads$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ThreadsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1003,6 +1305,7 @@ export interface ThreadsFieldRefs {
   readonly userId: Prisma.FieldRef<"Threads", 'Int'>
   readonly title: Prisma.FieldRef<"Threads", 'String'>
   readonly content: Prisma.FieldRef<"Threads", 'String'>
+  readonly parentId: Prisma.FieldRef<"Threads", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Threads", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Threads", 'DateTime'>
 }
@@ -1401,6 +1704,49 @@ export type ThreadsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Threads to delete.
    */
   limit?: number
+}
+
+/**
+ * Threads.parent
+ */
+export type Threads$parentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Threads
+   */
+  select?: Prisma.ThreadsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Threads
+   */
+  omit?: Prisma.ThreadsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ThreadsInclude<ExtArgs> | null
+  where?: Prisma.ThreadsWhereInput
+}
+
+/**
+ * Threads.replies
+ */
+export type Threads$repliesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Threads
+   */
+  select?: Prisma.ThreadsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Threads
+   */
+  omit?: Prisma.ThreadsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ThreadsInclude<ExtArgs> | null
+  where?: Prisma.ThreadsWhereInput
+  orderBy?: Prisma.ThreadsOrderByWithRelationInput | Prisma.ThreadsOrderByWithRelationInput[]
+  cursor?: Prisma.ThreadsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ThreadsScalarFieldEnum | Prisma.ThreadsScalarFieldEnum[]
 }
 
 /**

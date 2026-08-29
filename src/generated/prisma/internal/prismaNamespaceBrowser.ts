@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Users: 'Users',
+  Session: 'Session',
   Threads: 'Threads'
 } as const
 
@@ -73,11 +74,21 @@ export const UsersScalarFieldEnum = {
   username: 'username',
   email: 'email',
   passwordHash: 'passwordHash',
-  createdAt: 'createdAt',
-  refreshToken: 'refreshToken'
+  createdAt: 'createdAt'
 } as const
 
 export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
+
+
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  refreshToken: 'refreshToken',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
 export const ThreadsScalarFieldEnum = {
@@ -85,6 +96,7 @@ export const ThreadsScalarFieldEnum = {
   userId: 'userId',
   title: 'title',
   content: 'content',
+  parentId: 'parentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

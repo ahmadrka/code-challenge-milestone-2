@@ -45,6 +45,11 @@ export { Prisma }
  */
 export type Users = Prisma.UsersModel
 /**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
+/**
  * Model Threads
  * 
  */
