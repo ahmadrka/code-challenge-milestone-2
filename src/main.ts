@@ -16,8 +16,19 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Simple Threads Backend & API')
-    .setDescription('')
+    .setDescription('API Documentation')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

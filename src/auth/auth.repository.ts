@@ -7,13 +7,21 @@ import { LoginDto } from './dto/login.dto';
 export class AuthRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findUserByEmail(email: string) {
+    return this.prisma.users.findUnique({
+      where: { email },
+    });
+  }
+
+  async findUserById(id: number) {
+    return this.prisma.users.findUnique({
+      where: { id },
+    });
+  }
+
   async register(registerDto: RegisterDto, hashedPassword: string) {
-    return await this.prisma.users.upsert({
-      where: { email: registerDto.email },
-      update: {
-        passwordHash: hashedPassword,
-      },
-      create: {
+    return await this.prisma.users.create({
+      data: {
         username: registerDto.username,
         email: registerDto.email,
         passwordHash: hashedPassword,
@@ -24,6 +32,24 @@ export class AuthRepository {
   async login(loginDto: LoginDto) {
     return this.prisma.users.findUnique({
       where: { email: loginDto.email },
+    });
+  }
+
+  async findSession(userId: number, refreshToken: string) {
+    return await this.prisma.session.findFirst({
+      where: { userId, refreshToken },
+    });
+  }
+
+  async createSession(userId: number, refreshToken: string) {
+    return await this.prisma.session.create({
+      data: { userId, refreshToken },
+    });
+  }
+
+  async deleteSession(userId: number, refreshToken: string) {
+    return await this.prisma.session.deleteMany({
+      where: { userId, refreshToken },
     });
   }
 }
