@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateThreadDto } from './dto/create-thread.dto';
 import { UpdateThreadDto } from './dto/update-thread.dto';
+import { ReplyThreadDto } from './dto/reply-thread.dto';
 
 @Injectable()
 export class ThreadsRepository {
@@ -46,7 +47,7 @@ export class ThreadsRepository {
     });
   }
 
-  async update(id: number, userId: number, updateThreadDto: UpdateThreadDto) {
+  async update(id: number, updateThreadDto: UpdateThreadDto) {
     return this.prisma.threads.update({
       where: { id },
       data: {
@@ -56,7 +57,18 @@ export class ThreadsRepository {
     });
   }
 
-  async remove(id: number, userId: number) {
+  async reply(id: number, userId: number, replyThreadDto: ReplyThreadDto) {
+    return this.prisma.threads.create({
+      data: {
+        userId,
+        parentId: id,
+        title: '',
+        content: replyThreadDto.content,
+      },
+    });
+  }
+
+  async remove(id: number) {
     return this.prisma.threads.delete({
       where: { id },
     });
