@@ -14,6 +14,7 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log('🌱 Starting database seeding...');
 
+  // User Seeding
   const user1 = await prisma.users.upsert({
     where: { email: 'johndoe@example.com' },
     update: {},
@@ -34,7 +35,35 @@ async function main() {
     },
   });
 
-  console.log({ user1, user2 });
+  // Threads Seeding
+  const thread1 = await prisma.threads.create({
+    data: {
+      userId: user1.id,
+      title: 'How do I set up environment variables in Node.js?',
+      content:
+        'I am new to backend development and confused about how to hide my API keys. Could someone explain how to use dotenv?',
+    },
+  });
+
+  const thread2 = await prisma.threads.create({
+    data: {
+      userId: user2.id,
+      title: 'When should I use PostgreSQL vs MongoDB?',
+      content:
+        'For a medium-scale e-commerce project, which database is more recommended and why?',
+    },
+  });
+
+  const thread3 = await prisma.threads.create({
+    data: {
+      userId: user1.id,
+      title: 'Getting a CORS error when hitting the API from React',
+      content:
+        "I keep getting an 'Access-Control-Allow-Origin' error. How do I handle this on the Express.js side?",
+    },
+  });
+
+  console.log({ user1, user2, thread1, thread2, thread3 });
   console.log('✅ Seeding completed successfully.');
 }
 
