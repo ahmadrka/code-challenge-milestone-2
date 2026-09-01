@@ -130,8 +130,6 @@ _Note: Change port number with port number in dotenv file._
 
 ### How To Run In Production
 
-### How To Run Locally
-
 **1. Clone Repository.**
 Clone project from remote repository to local folder.
 
