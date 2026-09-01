@@ -3,7 +3,12 @@
 <h1 align="center">Discussion Threads Backend Service</h1>
 <p align="center">Simple Backend service for Discussion Threads Platform, built with NestJS, SQLite, and PrismaORM</p>
 
-![Demo](./public/demo.gif)
+<details>
+<summary>See Swagger Screenshot</summary>
+
+![Demo](./public/demo.png)
+
+</details>
 
 ## 🚀 Tech Stack
 
