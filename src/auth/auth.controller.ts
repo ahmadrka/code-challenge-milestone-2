@@ -41,8 +41,6 @@ export class AuthController {
   }
 
   @Post('refresh')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Refresh access token' })
   @ApiResponse({
     status: 200,

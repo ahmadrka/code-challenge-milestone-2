@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -27,6 +28,13 @@ export class UsersService {
       throw new BadRequestException('Invalid input data');
     }
 
-    return await this.usersRepository.update(id, updateUserDto);
+    const { password, ...rest } = updateUserDto;
+    const updateData: Record<string, any> = { ...rest };
+
+    if (password) {
+      updateData.passwordHash = await bcrypt.hash(password, 10);
+    }
+
+    return await this.usersRepository.update(id, updateData);
   }
 }
