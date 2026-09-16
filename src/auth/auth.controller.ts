@@ -48,7 +48,7 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Invalid refresh token.' })
   @ApiResponse({ status: 400, description: 'Invalid input data.' })
-  refresh(@CurrentUser() user: IReqUser, @Body() refreshDto: RefreshDto) {
-    return this.authService.refresh(user, refreshDto);
+  refresh(@Body() refreshDto: RefreshDto) {
+    return this.authService.refresh(refreshDto);
   }
 }

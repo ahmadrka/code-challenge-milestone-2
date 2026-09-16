@@ -35,9 +35,9 @@ export class AuthRepository {
     });
   }
 
-  async findSession(userId: number, refreshToken: string) {
+  async findSession(refreshToken: string) {
     return await this.prisma.session.findFirst({
-      where: { userId, refreshToken },
+      where: { refreshToken },
     });
   }
 
@@ -47,9 +47,9 @@ export class AuthRepository {
     });
   }
 
-  async deleteSession(userId: number, refreshToken: string) {
+  async deleteSession(refreshToken: string) {
     return await this.prisma.session.deleteMany({
-      where: { userId, refreshToken },
+      where: { refreshToken },
     });
   }
 }

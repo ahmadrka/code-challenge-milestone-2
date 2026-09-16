@@ -105,37 +105,28 @@ export class AuthService {
   }
 
   // Refresh Token
-  async refresh(user: IReqUser, refreshDto: RefreshDto) {
-    if (!user || !refreshDto) {
+  async refresh(refreshDto: RefreshDto) {
+    if (!refreshDto) {
       throw new BadRequestException('Refresh failed: Missing input data');
     }
 
-    const data = await this.authRepository.findSession(
-      user.userId,
-      refreshDto.refreshToken,
-    );
-
-    console.log('user: ', user);
-    console.log('Data: ', data);
+    const data = await this.authRepository.findSession(refreshDto.refreshToken);
 
     if (!data) {
       throw new UnauthorizedException('Refresh failed: Invalid refresh token');
     }
 
-    const expiresAt = data.createdAt.getTime() + 19 * 24 * 60 * 60 * 1000; // 19 days
-    if (expiresAt < Date.now()) {
-      await this.authRepository.deleteSession(
-        data.userId,
-        refreshDto.refreshToken,
-      );
-      throw new UnauthorizedException('Refresh failed: Invalid refresh token');
-    }
+    // const expiresAt = data.createdAt.getTime() + 19 * 24 * 60 * 60 * 1000; // 19 days
+    // if (expiresAt < Date.now()) {
+    //   await this.authRepository.deleteSession(
+    //     data.userId,
+    //     refreshDto.refreshToken,
+    //   );
+    //   throw new UnauthorizedException('Refresh failed: Invalid refresh token');
+    // }
 
-    await this.authRepository.deleteSession(
-      data.userId,
-      refreshDto.refreshToken,
-    );
+    await this.authRepository.deleteSession(refreshDto.refreshToken);
 
-    return this.tokenSession(user.userId);
+    return this.tokenSession(data.userId);
   }
 }
